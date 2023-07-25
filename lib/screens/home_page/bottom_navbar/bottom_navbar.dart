@@ -1,0 +1,119 @@
+import 'package:baby_care/constant/Dimensions/domensions.dart';
+import 'package:baby_care/constant/colors/colors.dart';
+import 'package:baby_care/screens/profile/my_profile.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+
+import '../home.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late PersistentTabController _controller;
+
+  void onTapNav(int index) {
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = PersistentTabController(initialIndex: 0);
+  }
+
+  List<Widget> _buildScreens() {
+    return [MainHomePage(), MyProfile()];
+  }
+
+  List<PersistentBottomNavBarItem> _navBarsItems() {
+    return [
+      PersistentBottomNavBarItem(
+        icon: Icon(CupertinoIcons.home),
+        title: ("Home"),
+        activeColorPrimary: AppColors.mainColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      // PersistentBottomNavBarItem(
+      //   icon: Icon(CupertinoIcons.search),
+      //   title: ("search"),
+      //   activeColorPrimary: AppColors.mainColor,
+      //   inactiveColorPrimary: CupertinoColors.systemGrey,
+      // ),
+      PersistentBottomNavBarItem(
+        icon: Icon(CupertinoIcons.person),
+        title: ("me"),
+        activeColorPrimary: AppColors.mainColor,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+    ];
+  }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     body: pages[_selectedIndex],
+  //     bottomNavigationBar: BottomNavigationBar(
+  //         showSelectedLabels: false,
+  //         selectedItemColor: AppColors.mainColor,
+  //         unselectedItemColor: Colors.amberAccent,
+  //         selectedFontSize: 0.0,
+  //         unselectedFontSize: 0.0,
+  //         currentIndex: _selectedIndex,
+  //         showUnselectedLabels: false,
+  //         onTap: onTapNav,
+  //         items: [
+  //           BottomNavigationBarItem(
+  //               icon: Icon(Icons.home_outlined), label: "home"),
+  //           BottomNavigationBarItem(
+  //               icon: Icon(Icons.archive), label: "history"),
+  //           BottomNavigationBarItem(
+  //               icon: Icon(Icons.shopping_cart), label: "cart"),
+  //           BottomNavigationBarItem(icon: Icon(Icons.person), label: "me"),
+  //         ]),
+  //   );
+  // }
+  @override
+  Widget build(BuildContext context) {
+    Dimensions().init(context);
+    return PersistentTabView(
+      context,
+      controller: _controller,
+      screens: _buildScreens(),
+      items: _navBarsItems(),
+      confineInSafeArea: true,
+      backgroundColor: Colors.white, // Default is Colors.white.
+      handleAndroidBackButtonPress: true, // Default is true.
+      resizeToAvoidBottomInset:
+          true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+      stateManagement: true, // Default is true.
+      hideNavigationBarWhenKeyboardShows:
+          true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+      decoration: NavBarDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        colorBehindNavBar: Colors.white,
+      ),
+      popAllScreensOnTapOfSelectedTab: true,
+      popActionScreens: PopActionScreensType.all,
+      itemAnimationProperties: ItemAnimationProperties(
+        // Navigation Bar's items animation properties.
+        duration: Duration(milliseconds: 200),
+        curve: Curves.ease,
+      ),
+      screenTransitionAnimation: ScreenTransitionAnimation(
+        // Screen transition animation on change of selected tab.
+        animateTabTransition: true,
+        curve: Curves.ease,
+        duration: Duration(milliseconds: 200),
+      ),
+      navBarStyle:
+          NavBarStyle.style1, // Choose the nav bar style with this property.
+    );
+  }
+}
